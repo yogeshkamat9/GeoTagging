@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geo-Tagging For Plantation and Hydroprojects</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            animation: bgAnimation 20s linear infinite alternate; /* Background animation */
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 20px;
+        }
+        .card {
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+        .card h2 {
+            margin-top: 0;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        th {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        td {
+            color: #ccc;
+        }
+        .source-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .source-links a {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .source-links a:hover {
+            background-color: #45a049;
+        }
+
+        /* Animation for background */
+        @keyframes bgAnimation {
+            0% { background-color: #000; }
+            50% { background-color: #030303; }
+            100% { background-color: #000; }
+        }
+
+        /* Animation for John division */
+        @keyframes johnAnimation {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Apply animation to John division */
+        .john {
+            animation: johnAnimation 3s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard</h1>
+        <div class="grid-container">
+            <div class="card">
+                <h2>Google Earth</h2>
+                <img src="google_earth_image.jpg" alt="Google Earth" style="max-width: 100%;">
+            </div>
+            <div class="card">
+                <h2>Sentinel Hub</h2>
+                <img src="sentinel_hub_image.jpg" alt="Sentinel Hub" style="max-width: 100%;">
+            </div>
+            <div class="card">
+                <h2>Major Project</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Division</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- John and Alice rows removed -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="card">
+                <h2>Summary</h2>
+                <p>This is a summary of the data.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Source Links -->
+    <div class="source-links">
+        <a href="https://earth.google.com/web/">Google Earth</a>
+        <a href="https://developers.google.com/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-1">Dynamic World</a>
+    </div>
+    <script>
+        document.body.style.backgroundImage = "url('google_earth_image.jpg')";
+    </script>
+</body>
+</html>
