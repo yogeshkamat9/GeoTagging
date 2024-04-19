@@ -1,0 +1,24 @@
+import subprocess
+import os
+
+def run_jupyter_notebook(notebook_path):
+    try:
+        # Get the absolute path to the notebook file
+        notebook_abs_path = os.path.abspath(notebook_path)
+        
+        # Replace backslashes with forward slashes
+        # notebook_abs_path = notebook_abs_path.replace("\\", "/")
+        
+        # Run the Jupyter notebook using subprocess
+        subprocess.run(["jupyter", "nbconvert", "--execute", "--to", "notebook", notebook_abs_path])
+    except Exception as e:
+        print("An error occurred while running the Jupyter notebook:", e)
+
+if __name__ == "__main__":
+    # Specify the path to the Jupyter notebook file
+    notebook_file_path = 'C:\\Users\\Yogesh\\Desktop\\Project\\Project.ipynb'  # Use forward slashes
+    
+    # # Run the Jupyter notebook
+    # run_jupyter_notebook(notebook_file_path)
+
+print(notebook_file_path)
