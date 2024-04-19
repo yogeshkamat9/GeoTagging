@@ -1,0 +1,46 @@
+import subprocess
+import http.server
+import socket
+import socketserver
+import webbrowser
+
+# Define the handler for handling HTTP requests
+class RequestHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == 'C:\\xampp\\htdocs\\\\Project.ipynb':
+            try:
+                # Execute the IPython notebook
+                subprocess.run(["jupyter", "nbconvert", "--execute", "--to", "notebook", NOTEBOOK_FILE])
+                self.send_response(200)
+                self.send_header("Content-type", "text/plain")
+                self.end_headers()
+                self.wfile.write(b"IPython notebook executed successfully!")
+            except Exception as e:
+                self.send_response(500)
+                self.send_header("Content-type", "text/plain")
+                self.end_headers()
+                self.wfile.write(str(e).encode())
+
+def find_available_port(start_port=80, end_port=443):
+    """Find an available port within the specified range."""
+    for port in range(start_port, end_port):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            if s.connect_ex(("localhost", port)) != 0:
+                return port
+    raise RuntimeError("No available ports found in the specified range.")
+
+# Define the path to the notebook file
+NOTEBOOK_FILE = 'C:\\Users\\Yogesh\\Desktop\\Project\\Project.ipynb'
+
+# Define the port for the server to listen on
+PORT = find_available_port()
+
+# Create an instance of the HTTP server
+with socketserver.TCPServer(("", PORT), RequestHandler) as httpd:
+    print("Server started at http://localhost:" + str(PORT))
+    
+    # Open the browser to the server URL
+    webbrowser.open_new_tab(f"http://localhost:{PORT}")
+    
+    # Start serving HTTP requests
+    httpd.serve_forever()
