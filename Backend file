@@ -1,0 +1,73 @@
+import ee
+import geemap
+import ipywidgets as widgets
+
+# Initialize Earth Engine
+try:
+    ee.Initialize()
+except ee.EEException as e:
+    ee.Authenticate()
+    ee.Initialize()
+
+# Load Landsat imagery
+dataset = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2').filterDate(
+    '2021-05-01', '2021-06-01'
+)
+
+# Define function to apply scaling factors
+def apply_scale_factors(image):
+    optical_bands = image.select('SR_B.').multiply(0.0000275).add(-0.2)
+    thermal_bands = image.select('ST_B.*').multiply(0.00341802).add(149.0)
+    return image.addBands(optical_bands, None, True).addBands(
+        thermal_bands, None, True
+    )
+
+# Apply scaling factors to the dataset
+dataset = dataset.map(apply_scale_factors)
+
+# Define visualization parameters
+visualization = {
+    'bands': ['SR_B4', 'SR_B3', 'SR_B2'],
+    'min': 0.0,
+    'max': 0.3,
+}
+
+# Create a Map
+m = geemap.Map()
+
+# Function to handle location selection
+def handle_location_change(change):
+    location = change['new']
+    
+    # Clear existing layers
+    m.clear_layers()
+
+    # Get region of interest based on selected location
+    roi = get_roi(location)
+
+    # Filter Landsat imagery by region of interest
+    dataset_roi = dataset.filterBounds(roi)
+
+    if dataset_roi.size().getInfo() > 0:
+        # Add Landsat imagery to the map
+        m.add_layer(dataset_roi, visualization, 'True Color (432)')
+        m.centerObject(roi)
+        
+        # Create a time-lapse GIF
+        out_gif = path.join(os.path.expanduser('~'), 'timelapse.gif')
+        geemap.download_ee_video(dataset_roi, out_gif, region=roi, name='timelapse', dimensions=768, frames_per_second=2)
+        
+        # Display the time-lapse GIF
+        with open(out_gif, 'rb') as f:
+            display(widgets.Image(value=f.read(), format='png', width=800, height=600))
+    else:
+        print("No Landsat imagery available for the selected area.")
+
+# Dropdown widget for location selection
+locations = ['Location 1', 'Location 2', 'Location 3']  # Add your locations here
+location_dropdown = widgets.Dropdown(options=locations, description='Select Location:', style={'description_width': 'initial'})
+location_dropdown.observe(handle_location_change, names='value')
+
+# Display the dropdown widget
+display(location_dropdown)
+display(m)
